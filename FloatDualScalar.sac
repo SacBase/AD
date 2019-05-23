@@ -1,0 +1,35 @@
+module FloatDualScalar;
+
+use FloatDualCore: all;
+use Array:{sel};
+export all;
+
+inline
+float_dual zero( float_dual[*] a)
+{
+  return inject (0f);
+}
+
+inline
+float_dual + (float_dual xd, float_dual yd)
+{
+  return (float_dual) ((float[2])xd Array::+ (float[2])yd); 
+}
+
+inline
+float_dual * (float_dual xd, float_dual yd)
+{
+   x = ((float[2])xd)[0];
+   xp = ((float[2])xd)[1];
+   y = ((float[2])yd)[0];
+   yp = ((float[2])yd)[1];
+   return (float_dual)[x Array::* y, (xp Array::* y) Array::+ (x Array::* yp)];
+}
+
+
+inline
+bool == (float_dual x, float_dual y)
+{
+  return ((float[2])x)[0] Array::== ((float[2])y)[0]; 
+}
+

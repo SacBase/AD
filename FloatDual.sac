@@ -1,0 +1,8 @@
+module FloatDual;
+
+import FloatDualCore: all;
+import FloatDualScalar: all;
+import FloatDualArray: all;
+import FloatDualArrayArith: all;
+
+export all;

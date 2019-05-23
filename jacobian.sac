@@ -1,0 +1,49 @@
+import Array: all;
+import FloatDual: all;
+
+inline
+float_dual[.] foo (float_dual[.] x)
+{
+   return { iv -> x[iv] + x[iv] | iv < shape( x) ;
+            iv -> make_dual (0f,0f) | iv < shape( x)};
+}
+
+inline
+float_dual[.,.] jacobian (float[.] x)
+{
+  n = shape(x)[0];
+
+  default = with {
+            } : genarray( [n], make_dual (0f,0f));
+
+  res = with { 
+           ([0,0] <= [i,j] < [n,n]) :  make_dual (x[i], tof( i==j)) ;
+        } : genarray( [n,n], inject (0f));
+
+  return res;
+}
+
+inline
+float_dual[.,.] jacobian_foo (float[.] x) 
+{
+  res = with {
+           ([0] <= [i] < shape(x)) : foo (jacobian (x)[[i]]);
+        } : modarray( jacobian (x));
+
+  return res;
+}
+
+
+int main()
+{
+    x = tof (iota (10));
+   
+    resd = jacobian_foo (x);
+
+    res = { [i] -> get_deriv( sum( resd[[i]]))};
+
+    ArrayIO::print(res);
+
+    return 0;
+}
+

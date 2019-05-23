@@ -1,0 +1,22 @@
+module FloatDualArrayArith;
+
+use FloatDualCore: all;
+use FloatDualArray: all;
+import FloatDualScalar: all;
+export all;
+
+inline
+float_dual[+] + (float_dual[+] xd, float_dual[+] yd)
+{
+  return with {
+            (0 Array::* shape(xd) <= iv < shape(xd)) : xd[iv] + yd[iv];
+         } : modarray( xd);
+}
+
+inline
+float_dual sum( float_dual[*] fda)
+{
+  return with {
+            (0 Array::* shape(fda) <= iv < shape(fda)) : fda[iv];
+         } : fold(+, inject(0f));
+}

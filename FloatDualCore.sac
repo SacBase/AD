@@ -1,0 +1,31 @@
+module FloatDualCore;
+
+use Array: {sel,modarray};
+export all;
+
+typedef float[2] float_dual;
+
+inline
+float_dual inject (float x)
+{
+  return (float_dual)[x, 0f]; 
+}
+
+inline
+float_dual set_deriv (float_dual fd, float xp)
+{
+  return (float_dual)modarray((float[2])fd,[1],xp); 
+}
+
+inline
+float get_deriv (float_dual fd)
+{
+  return ((float[2])fd)[1]; 
+}
+
+inline
+float_dual make_dual (float x, float xp)
+{
+  return (float_dual)[x,xp]; 
+}
+

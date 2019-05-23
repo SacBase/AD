@@ -1,0 +1,32 @@
+module FloatDualArray;
+
+use FloatDualCore: all;
+use Array: {-,drop};
+export all;
+
+inline
+float_dual[*] sel( int[.] iv, float_dual[*] fd)
+{
+  return (float_dual[*]) Array::sel( iv, ((float[+])fd));
+}
+
+inline
+int dim (float_dual[*] fd)
+{
+  return Array::dim((float[*])fd) -1; 
+}
+
+inline
+int[.] shape (float_dual[*] fd)
+{ 
+  return drop( [-1], Array::shape((float[*])fd)); 
+}
+
+inline
+float_dual[*] modarray( float_dual[*] fda, int[.] idx, float_dual fd)
+{
+   res = with {
+           ( idx <= iv <= idx) : (float[2])fd;
+         } : modarray( (float[*])fda);
+   return (float_dual[*])res;
+}
